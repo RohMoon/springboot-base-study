@@ -16,6 +16,6 @@ public class OrderController {
 
     @Post
     public List<String> createOrders(List<String> requestList) {
-        return List.of("A", "B", "C");
+        return requestList;
     }
 }
