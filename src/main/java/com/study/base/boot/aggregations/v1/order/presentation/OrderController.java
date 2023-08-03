@@ -3,6 +3,7 @@ package com.study.base.boot.aggregations.v1.order.presentation;
 import com.study.base.boot.config.annotations.Get;
 import com.study.base.boot.config.annotations.Post;
 import com.study.base.boot.config.annotations.RestApi;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
 
@@ -15,7 +16,7 @@ public class OrderController {
     }
 
     @Post
-    public List<String> createOrders(List<String> requestList) {
+    public List<String> createOrders(@RequestBody List<String> requestList) {
         return requestList;
     }
 }
