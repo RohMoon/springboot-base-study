@@ -4,6 +4,8 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 import lombok.Getter;
 
+import java.util.List;
+
 @Getter
 @Builder
 public class CreateOrderDto {
@@ -13,4 +15,6 @@ public class CreateOrderDto {
 
     @NotNull
     private String address;
+
+    private List<CreateOrderItemDto> items;
 }
