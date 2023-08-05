@@ -18,7 +18,7 @@ public class OrderController {
     @Post
     public List<String> createOrders(@RequestBody List<String> requestList) {
 
-        return requestList;
+        return List.copyOf(requestList);
 
     }
 }
