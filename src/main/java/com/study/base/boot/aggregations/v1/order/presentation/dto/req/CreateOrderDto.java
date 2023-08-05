@@ -1,5 +1,6 @@
 package com.study.base.boot.aggregations.v1.order.presentation.dto.req;
 
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 import lombok.Getter;
@@ -16,5 +17,7 @@ public class CreateOrderDto {
     @NotNull
     private String address;
 
+    @Valid
+    @NotNull
     private List<CreateOrderItemDto> items;
 }
