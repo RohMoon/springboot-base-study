@@ -1,5 +1,6 @@
 package com.study.base.boot.aggregations.v1.order.presentation;
 
+import com.study.base.boot.aggregations.v1.order.presentation.dto.req.CreateOrderDto;
 import com.study.base.boot.config.annotations.Get;
 import com.study.base.boot.config.annotations.Post;
 import com.study.base.boot.config.annotations.RestApi;
@@ -16,9 +17,9 @@ public class OrderController {
     }
 
     @Post
-    public List<String> createOrders(@RequestBody List<String> requestList) {
+    public long createOrders(@RequestBody CreateOrderDto request) {
 
-        return List.copyOf(requestList);
+        return 0L;
 
     }
 }
