@@ -26,7 +26,9 @@ public class OrderController {
 
     @Post
     public long createOrders(@RequestBody @Valid CreateOrderDto request) {
-        orderService.create(null);
+        final var create = request.toCreate();
+
+        orderService.create(create);
 
         return 0L;
     }
