@@ -9,6 +9,9 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
     username: root
     password: studydocker1!
+  jpa:
+    hibernate:
+      ddl-auto: validate
 
 springdoc:
 
