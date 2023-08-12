@@ -15,7 +15,7 @@ public class OrderAggregate {
     private String orderName;
     private String status;
     private int price;
-    private int deliveryFace;
+    private int deliveryFee;
     private String address;
 
     private long userId;
