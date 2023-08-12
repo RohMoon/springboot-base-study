@@ -12,6 +12,11 @@ spring:
   jpa:
     hibernate:
       ddl-auto: validate
+    properties:
+      hibernate:
+        query.in_clause_parameter_padding: true
+        show_sql: true
+        format_sql: true
 
 springdoc:
 
