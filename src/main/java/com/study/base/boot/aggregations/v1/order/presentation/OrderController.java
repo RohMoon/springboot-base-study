@@ -1,16 +1,23 @@
 package com.study.base.boot.aggregations.v1.order.presentation;
 
+import com.study.base.boot.aggregations.v1.order.application.OrderService;
 import com.study.base.boot.aggregations.v1.order.presentation.dto.req.CreateOrderDto;
 import com.study.base.boot.config.annotations.Get;
 import com.study.base.boot.config.annotations.Post;
 import com.study.base.boot.config.annotations.RestApi;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
 
+@Slf4j
 @RestApi("/v1/orders")
+@RequiredArgsConstructor
 public class OrderController {
+
+    private final OrderService orderService;
 
     @Get
     public List<String> getOrders() {
@@ -19,6 +26,7 @@ public class OrderController {
 
     @Post
     public long createOrders(@RequestBody @Valid CreateOrderDto request) {
+        orderService.create(null);
 
         return 0L;
     }
