@@ -1,7 +1,9 @@
 package com.study.base.boot.aggregations.v1.order.presentation;
 
 import com.study.base.boot.aggregations.v1.order.application.OrderService;
+import com.study.base.boot.aggregations.v1.order.application.dto.req.CreateOrder;
 import com.study.base.boot.aggregations.v1.order.presentation.dto.req.CreateOrderDto;
+import com.study.base.boot.aggregations.v1.order.presentation.dto.req.CreateOrdersDto;
 import com.study.base.boot.config.annotations.Get;
 import com.study.base.boot.config.annotations.Post;
 import com.study.base.boot.config.annotations.RestApi;
@@ -11,6 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Slf4j
 @RestApi("/v1/orders")
@@ -25,9 +28,13 @@ public class OrderController {
     }
 
     @Post
-    public long createOrder(@RequestBody @Valid CreateOrderDto request) {
-        final var create = request.toCreate();
-        orderService.create(create);
-        return 0L;
+    public List<Long> createOrders(@RequestBody @Valid CreateOrdersDto request) {
+        final List<CreateOrder> createOrderList = request
+                .getCreateOrders()
+                .stream()
+                .map(CreateOrderDto::toCreate)
+                .collect(Collectors.toList());
+
+        return orderService.createOrders(createOrderList);
     }
 }
