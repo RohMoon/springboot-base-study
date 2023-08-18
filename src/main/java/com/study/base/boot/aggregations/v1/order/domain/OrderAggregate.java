@@ -5,6 +5,7 @@ import com.study.base.boot.aggregations.v1.order.infrastructure.repository.Order
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.annotations.DynamicInsert;
@@ -13,6 +14,7 @@ import java.time.LocalDateTime;
 
 @Entity
 @Builder
+@Getter
 @DynamicInsert
 @NoArgsConstructor
 @AllArgsConstructor

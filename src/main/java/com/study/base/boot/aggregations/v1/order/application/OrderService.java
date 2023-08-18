@@ -5,8 +5,10 @@ import com.study.base.boot.aggregations.v1.order.domain.OrderAggregate;
 import com.study.base.boot.aggregations.v1.order.infrastructure.repository.OrderRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class OrderService {
@@ -19,5 +21,7 @@ public class OrderService {
                 .build()
                 .patch(createOrder)
                 .create(orderRepository);
+
+        log.info("id : {}", orderAggregate.getId());
     }
 }
