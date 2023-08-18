@@ -20,9 +20,6 @@ public class CreateOrderDto {
     private String address;
     private long userId;
 
-    //    @NotNull
-//    @Valid
-//    private List<CreateOrderItemDto> items;
     public CreateOrder toCreate() {
         return CreateOrder.builder()
                 .orderNumber(this.orderNumber)
