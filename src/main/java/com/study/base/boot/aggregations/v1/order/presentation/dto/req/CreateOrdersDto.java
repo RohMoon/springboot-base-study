@@ -2,6 +2,7 @@ package com.study.base.boot.aggregations.v1.order.presentation.dto.req;
 
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.*;
 
 import java.util.List;
@@ -12,7 +13,8 @@ import java.util.List;
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 public class CreateOrdersDto {
 
-    @NotNull
     @Valid
+    @NotNull
+    @Size(min = 1)
     private List<CreateOrderDto> createOrders;
 }
