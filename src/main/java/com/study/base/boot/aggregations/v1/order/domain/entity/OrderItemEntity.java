@@ -42,6 +42,6 @@ public class OrderItemEntity {
     private LocalDateTime updatedDate;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "orderId", insertable = false, updatable = false) // 이테이블에 외래키
+    @JoinColumn(name = "orderId") // 이테이블에 외래키
     private OrderAggregate order;
 }
