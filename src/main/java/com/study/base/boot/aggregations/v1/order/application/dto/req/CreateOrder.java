@@ -4,6 +4,8 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.PositiveOrZero;
 import lombok.*;
 
+import java.util.List;
+
 @Getter
 @Builder
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
@@ -13,7 +15,7 @@ public class CreateOrder {
     private String orderNumber;
     @NotNull
     private String orderName;
-    private String status;
+    //    private String status;
     @PositiveOrZero
     private int price;
     @PositiveOrZero
@@ -22,5 +24,7 @@ public class CreateOrder {
     private String address;
     @PositiveOrZero
     private long userId;
+
+    private List<CreateOrderItem> items;
 }
 

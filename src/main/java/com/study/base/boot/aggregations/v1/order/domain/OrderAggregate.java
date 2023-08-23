@@ -11,8 +11,10 @@ import org.hibernate.annotations.DynamicInsert;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import org.springframework.util.Assert;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -63,6 +65,31 @@ public class OrderAggregate {
         this.userId = createOrder.getUserId();
         this.createdDate = LocalDateTime.now();
 
+//        createOrder.getItems()
+//                .forEach(item -> this.addItem(null));
+        createOrder
+                .getItems()
+                .forEach(item -> this.addItem(
+                        OrderItemEntity
+                                .builder()
+                                .build()
+                                .patch(item)
+                ));
+
         return this;
     }
+
+    public OrderAggregate addItem(OrderItemEntity orderItem) {
+        Assert.notNull(orderItem, "orderItem is null");
+
+        if (this.getItems() == null) {
+            this.items = new ArrayList<>();
+        }
+
+        orderItem.putOrder(this);
+        this.items.add(orderItem);
+
+        return this;
+    }
+
 }
