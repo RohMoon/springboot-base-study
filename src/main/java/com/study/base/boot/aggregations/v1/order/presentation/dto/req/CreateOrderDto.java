@@ -9,6 +9,7 @@ import lombok.Builder;
 import lombok.Getter;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Getter
 @Builder
@@ -43,6 +44,12 @@ public class CreateOrderDto {
                 .deliveryFee(this.deliveryFee)
                 .address(this.address)
                 .userId(this.userId)
+                .items(
+                        this.items
+                                .stream()
+                                .map(CreateOrderItemDto::toCreate)
+                                .collect(Collectors.toList())
+                )
                 .build();
     }
 }
