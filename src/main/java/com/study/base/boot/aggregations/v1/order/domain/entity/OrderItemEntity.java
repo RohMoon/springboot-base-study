@@ -1,5 +1,6 @@
 package com.study.base.boot.aggregations.v1.order.domain.entity;
 
+import com.study.base.boot.aggregations.v1.order.domain.OrderAggregate;
 import com.study.base.boot.aggregations.v1.order.domain.enumerations.OrderItemStatusEnum;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -29,6 +30,7 @@ public class OrderItemEntity {
     private long orderId;
     private long itemId;
     private String itemName;
+    @Enumerated(EnumType.STRING)
     private OrderItemStatusEnum status;
     private int price;
     private int qty;
@@ -38,4 +40,7 @@ public class OrderItemEntity {
 
     @LastModifiedDate
     private LocalDateTime updatedDate;
+
+    @ManyToOne
+    private OrderAggregate order;
 }

@@ -1,6 +1,7 @@
 package com.study.base.boot.aggregations.v1.order.domain;
 
 import com.study.base.boot.aggregations.v1.order.application.dto.req.CreateOrder;
+import com.study.base.boot.aggregations.v1.order.domain.entity.OrderItemEntity;
 import com.study.base.boot.aggregations.v1.order.domain.enumerations.OrderStatusEnum;
 import com.study.base.boot.aggregations.v1.order.infrastructure.repository.OrderRepository;
 import jakarta.persistence.*;
@@ -29,6 +30,7 @@ public class OrderAggregate {
 
     private String orderNumber;
     private String orderName;
+    @Enumerated(EnumType.STRING)
     private OrderStatusEnum status;
     private int price;
     private int deliveryFee;
@@ -38,6 +40,9 @@ public class OrderAggregate {
     private LocalDateTime createdDate;
     @LastModifiedDate
     private LocalDateTime updatedDate;
+
+    @OneToMany
+    private List<OrderItemEntity> items;
 
     public OrderAggregate create(OrderRepository orderRepository) {
         orderRepository.save(this);
