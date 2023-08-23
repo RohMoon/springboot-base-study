@@ -3,21 +3,19 @@ package com.study.base.boot.aggregations.v1.order.domain;
 import com.study.base.boot.aggregations.v1.order.application.dto.req.CreateOrder;
 import com.study.base.boot.aggregations.v1.order.infrastructure.repository.OrderRepository;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.annotations.DynamicInsert;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Builder
 @Getter
 @DynamicInsert
-@NoArgsConstructor
-@AllArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(catalog = "base", name = "order")
 public class OrderAggregate {
     @Id
@@ -39,6 +37,15 @@ public class OrderAggregate {
 
         return this;
     }
+
+    public static List<OrderAggregate> saveAll(OrderRepository orderRepository, List<OrderAggregate> orders) {
+        return orderRepository.saveAll(orders);
+    }
+
+    public static void saveAll(OrderRepository orderRepository) {
+
+    }
+
 
     public OrderAggregate patch(CreateOrder createOrder) {
         this.orderNumber = StringUtils.defaultIfEmpty(createOrder.getOrderNumber(), this.orderNumber);
