@@ -14,7 +14,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
 
-@Table(catalog = "base", name = "orderItem")
+@Table(catalog = "base", name = "order_item")
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
@@ -27,7 +27,7 @@ public class OrderItemEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private long orderId;
+    //    private Long orderId; // 중복
     private long itemId;
     private String itemName;
     @Enumerated(EnumType.STRING)
@@ -41,6 +41,7 @@ public class OrderItemEntity {
     @LastModifiedDate
     private LocalDateTime updatedDate;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "orderId", insertable = false, updatable = false) // 이테이블에 외래키
     private OrderAggregate order;
 }
