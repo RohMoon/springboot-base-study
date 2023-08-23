@@ -34,10 +34,8 @@ public class OrderService {
                         .build()
                         .patch(createOrder))
                 .toList();
-
-        List<OrderAggregate> savedOrders = orderRepository.saveAll(orders);
-
-        return savedOrders
+        return OrderAggregate
+                .saveAll(orderRepository, orders)
                 .stream()
                 .map(OrderAggregate::getId)
                 .collect(Collectors.toList());
