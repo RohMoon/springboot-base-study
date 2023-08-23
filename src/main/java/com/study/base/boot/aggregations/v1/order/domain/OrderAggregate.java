@@ -40,9 +40,9 @@ public class OrderAggregate {
     private LocalDateTime createdDate;
     @LastModifiedDate
     private LocalDateTime updatedDate;
-
-    @OneToMany
-    private List<OrderItemEntity> items;
+    //orderitem의 정보가 없으니 알거 없고 다른데서 order를 쓰라고하ㅡ
+    @OneToMany(mappedBy = "order", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+    private List<OrderItemEntity> items; //@Entity 타입을 줘야 한다.
 
     public OrderAggregate create(OrderRepository orderRepository) {
         orderRepository.save(this);
