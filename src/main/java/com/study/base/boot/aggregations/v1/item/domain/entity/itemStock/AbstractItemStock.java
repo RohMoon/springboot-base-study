@@ -1,7 +1,6 @@
-package com.study.base.boot.aggregations.v1.order.domain.entity;
+package com.study.base.boot.aggregations.v1.item.domain.entity.itemStock;
 
 
-import com.study.base.boot.aggregations.v1.order.domain.enumerations.OrderItemStatusEnum;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -14,28 +13,22 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
 
-@EntityListeners(AuditingEntityListener.class)
-@MappedSuperclass
 @Getter
 @SuperBuilder
+@MappedSuperclass
+@EntityListeners(AuditingEntityListener.class)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor
-public abstract class AbstractOrderItem {
+@AllArgsConstructor(access = AccessLevel.PROTECTED)
+public abstract class AbstractItemStock {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     protected Long id;
-    protected long itemId;
-    protected String itemName;
-
-    @Enumerated(EnumType.STRING)
-    protected OrderItemStatusEnum status;
-    protected int price;
-    protected int qty;
+    protected int stockQty;
 
     @CreatedDate
     protected LocalDateTime createdDate;
 
     @LastModifiedDate
-    protected LocalDateTime updateDate;
+    protected LocalDateTime updatedDate;
 }

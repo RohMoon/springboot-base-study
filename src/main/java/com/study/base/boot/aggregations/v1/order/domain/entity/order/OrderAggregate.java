@@ -1,54 +1,38 @@
-package com.study.base.boot.aggregations.v1.order.domain;
+package com.study.base.boot.aggregations.v1.order.domain.entity.order;
 
 import com.study.base.boot.aggregations.v1.order.application.dto.req.CreateOrder;
-import com.study.base.boot.aggregations.v1.order.domain.entity.OrderItemEntity;
-import com.study.base.boot.aggregations.v1.order.domain.enumerations.OrderStatusEnum;
+import com.study.base.boot.aggregations.v1.order.domain.entity.orderItem.OrderItemEntity;
 import com.study.base.boot.aggregations.v1.order.infrastructure.repository.OrderRepository;
-import jakarta.persistence.*;
-import lombok.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.annotations.DynamicInsert;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import org.springframework.util.Assert;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-@Entity
-@Builder
 @Getter
+@Entity
 @DynamicInsert
+@SuperBuilder
 @Table(catalog = "base", name = "order")
-@EntityListeners(AuditingEntityListener.class)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
-public class OrderAggregate {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+public class OrderAggregate extends AbstractOrder {
 
-    private String orderNumber;
-    private String orderName;
-    @Enumerated(EnumType.STRING)
-    private OrderStatusEnum status;
-    private int price;
-    private int deliveryFee;
-    private String address;
-    private long userId;
-    @CreatedDate
-    private LocalDateTime createdDate;
-    @LastModifiedDate
-    private LocalDateTime updatedDate;
-    //orderitem의 정보가 없으니 알거 없고 다른데서 order를 쓰라고하ㅡ
-    @OneToMany(mappedBy = "order", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+    @OneToMany(mappedBy = "order")
     private List<OrderItemEntity> items; //@Entity 타입을 줘야 한다.
 
     public OrderAggregate create(OrderRepository orderRepository) {
         orderRepository.save(this);
-
         return this;
     }
 
@@ -65,8 +49,6 @@ public class OrderAggregate {
         this.userId = createOrder.getUserId();
         this.createdDate = LocalDateTime.now();
 
-//        createOrder.getItems()
-//                .forEach(item -> this.addItem(null));
         createOrder
                 .getItems()
                 .forEach(item -> this.addItem(
@@ -86,10 +68,9 @@ public class OrderAggregate {
             this.items = new ArrayList<>();
         }
 
-        orderItem.putOrder(this);
+//        orderItem.putOrder(this);
         this.items.add(orderItem);
 
         return this;
     }
-
 }

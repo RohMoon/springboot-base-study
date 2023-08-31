@@ -5,14 +5,21 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.PositiveOrZero;
 import jakarta.validation.constraints.Size;
-import lombok.Builder;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
+import org.hibernate.annotations.DynamicInsert;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Getter
-@Builder
+@SuperBuilder
+@DynamicInsert
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor(access = AccessLevel.PROTECTED)
 public class CreateOrderDto {
     @NotNull
     private String orderNumber;

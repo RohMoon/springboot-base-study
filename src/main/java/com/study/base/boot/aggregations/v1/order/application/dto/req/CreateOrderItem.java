@@ -10,6 +10,4 @@ public class CreateOrderItem {
     private String itemName;
     private int price;
     private int qty;
-
-    //private OrderItemStatusEnum status;
 }
