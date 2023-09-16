@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -40,4 +41,12 @@ public class OrderService {
                 .map(OrderAggregate::getId)
                 .collect(Collectors.toList());
     }
+
+    public OrderAggregate get(long id) {
+        Optional<OrderAggregate> byId = orderRepository.findById(id);
+        OrderAggregate orderAggregate = byId.orElseGet(null);
+
+        return orderAggregate;
+    }
+
 }
