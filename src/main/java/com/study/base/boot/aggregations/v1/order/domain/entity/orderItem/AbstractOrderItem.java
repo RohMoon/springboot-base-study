@@ -2,6 +2,7 @@ package com.study.base.boot.aggregations.v1.order.domain.entity.orderItem;
 
 
 import com.study.base.boot.aggregations.v1.order.domain.enumerations.OrderItemStatusEnum;
+import com.study.base.boot.config.mapstruct.base.BaseEntity;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -20,7 +21,7 @@ import java.time.LocalDateTime;
 @SuperBuilder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
-public abstract class AbstractOrderItem {
+public abstract class AbstractOrderItem extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

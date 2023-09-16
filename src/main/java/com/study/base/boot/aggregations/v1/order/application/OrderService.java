@@ -2,10 +2,14 @@ package com.study.base.boot.aggregations.v1.order.application;
 
 import com.study.base.boot.aggregations.v1.order.application.dto.req.CreateOrder;
 import com.study.base.boot.aggregations.v1.order.domain.entity.order.OrderAggregate;
+import com.study.base.boot.aggregations.v1.order.domain.entity.orderItem.OrderItemEntity;
+import com.study.base.boot.aggregations.v1.order.domain.enumerations.OrderStatusEnum;
 import com.study.base.boot.aggregations.v1.order.infrastructure.repository.OrderRepository;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -42,11 +46,23 @@ public class OrderService {
                 .collect(Collectors.toList());
     }
 
+    @Transactional(readOnly = true)
     public OrderAggregate get(long id) {
         Optional<OrderAggregate> byId = orderRepository.findById(id);
         OrderAggregate orderAggregate = byId.orElseGet(null);
 
+        List<OrderItemEntity> items = orderAggregate.getItems();
+
+
         return orderAggregate;
     }
+
+    @Transactional(readOnly = true)
+    public Page<OrderAggregate> listByStatus(OrderStatusEnum orderStatus, Pageable pageable) {
+        Page<OrderAggregate> allByStatus = orderRepository.findAllByStatus(orderStatus, pageable);
+
+        return allByStatus;
+    }
+
 
 }

@@ -1,6 +1,7 @@
 package com.study.base.boot.aggregations.v1.order.domain.entity.order;
 
 import com.study.base.boot.aggregations.v1.order.domain.enumerations.OrderStatusEnum;
+import com.study.base.boot.config.mapstruct.base.BaseEntity;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -19,7 +20,7 @@ import java.time.LocalDateTime;
 @EntityListeners(AuditingEntityListener.class)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
-public class AbstractOrder {
+public class AbstractOrder extends BaseEntity {
 
     protected String orderNumber;
     protected String orderName;
