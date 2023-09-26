@@ -33,30 +33,41 @@ public class OrderController {
     private final OrderEDMapper orderEDMapper;
 
     @Get("/status/{status}")
-    public Page<OrderDto> listByStatus(
-            @PathVariable OrderStatusEnum status,
-            @PageableDefault(size = 10, sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
+    public Page<OrderDto> listByStatus(@PathVariable OrderStatusEnum status,
+                                       @PageableDefault(size = 10, sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
         Page<OrderAggregate> pageOrders = orderService.listByStatus(status, pageable);
         List<OrderAggregate> orders = pageOrders.getContent();
 
-        List<OrderDto> orderDtos = orders
-                .stream()
-                .map(orderEDMapper::toDto)
-                .collect(Collectors.toList());
+        List<OrderDto> orderDtos = orders.stream().map(orderEDMapper::toDto).collect(Collectors.toList());
 
         return new PageImpl<>(orderDtos, pageable, pageOrders.getTotalElements());
     }
 
     @Get("/conditions")
-    public Page<OrderDto> listByConditions() {
-        orderService.findAllByCreatedDateBetweenAndPriceBetween(
-                LocalDateTime.now(),
-                LocalDateTime.now(),
-                1000,
-                1000,
-                Pageable.ofSize(10)
+    public Page<OrderDto> listByConditions(LocalDateTime periodFrom,
+                                           LocalDateTime periodTo,
+                                           int minPrice,
+                                           int maxPrice,
+                                           @PageableDefault(size = 10, sort = "id", direction = Sort.Direction.DESC)
+                                           Pageable pageable) {
+        System.out.println(periodFrom);
+        System.out.println(periodTo);
+        System.out.println(minPrice);
+        System.out.println(maxPrice);
+        System.out.println(pageable);
+
+        Page<OrderAggregate> pageOrders = orderService.findAllByCreatedDateBetweenAndPriceBetween(
+                periodFrom,
+                periodTo,
+                minPrice,
+                maxPrice,
+                pageable
         );
-        return null;
+        List<OrderAggregate> orders = pageOrders.getContent();
+
+        List<OrderDto> orderDtos = orders.stream().map(orderEDMapper::toDto).toList();
+
+        return new PageImpl<>(orderDtos, pageable, pageOrders.getTotalElements());
     }
 
     @Get("/{id}")

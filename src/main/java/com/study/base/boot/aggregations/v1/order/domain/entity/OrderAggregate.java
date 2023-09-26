@@ -1,5 +1,6 @@
 package com.study.base.boot.aggregations.v1.order.domain.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.study.base.boot.aggregations.v1.order.application.dto.req.CreateOrder;
 import com.study.base.boot.aggregations.v1.order.domain.entity.orderItem.OrderItemEntity;
 import com.study.base.boot.aggregations.v1.order.infrastructure.repository.OrderRepository;
@@ -26,6 +27,7 @@ import java.util.stream.Collectors;
 @AllArgsConstructor(access = AccessLevel.PUBLIC)
 public class OrderAggregate extends AbstractOrder {
 
+    @JsonManagedReference
     @OneToMany(mappedBy = "order", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     private List<OrderItemEntity> items; //@Entity 타입을 줘야 한다.
 

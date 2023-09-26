@@ -23,21 +23,14 @@ public class OrderService {
 
     @Transactional
     public void create(CreateOrder createOrder) {
-        final var orderAggregate = OrderAggregate
-                .builder()
-                .build()
-                .patch(createOrder)
-                .create(orderRepository);
+        final var orderAggregate = OrderAggregate.builder().build().patch(createOrder).create(orderRepository);
     }
 
     @Transactional
     public List<Long> creates(List<CreateOrder> createOrders) {
         final var orders = OrderAggregate.creates(orderRepository, createOrders);
 
-        return orders
-                .stream()
-                .map(OrderAggregate::getId)
-                .collect(Collectors.toList());
+        return orders.stream().map(OrderAggregate::getId).collect(Collectors.toList());
     }
 
     @Transactional(readOnly = true)
@@ -49,7 +42,8 @@ public class OrderService {
     }
 
     @Transactional(readOnly = true)
-    public Page<OrderAggregate> listByStatus(OrderStatusEnum orderStatus, Pageable pageable) {
+    public Page<OrderAggregate> listByStatus(OrderStatusEnum orderStatus,
+                                             Pageable pageable) {
         Page<OrderAggregate> allByStatus = orderRepository.findAllByStatus(orderStatus, pageable);
 
         return allByStatus;
@@ -57,9 +51,9 @@ public class OrderService {
 
     public Page<OrderAggregate> findAllByCreatedDateBetweenAndPriceBetween(LocalDateTime periodFrom,
                                                                            LocalDateTime periodTo,
-                                                                           int minPrice, int maxPrice, Pageable pageable
-
-    ) {
+                                                                           int minPrice,
+                                                                           int maxPrice,
+                                                                           Pageable pageable) {
         Page<OrderAggregate> allByConditions = orderRepository.findAllByCreatedDateBetweenAndPriceBetween(periodFrom,
                                                                                                           periodTo,
                                                                                                           minPrice,

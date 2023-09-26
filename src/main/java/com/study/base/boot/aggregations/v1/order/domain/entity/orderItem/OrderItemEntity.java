@@ -1,5 +1,6 @@
 package com.study.base.boot.aggregations.v1.order.domain.entity.orderItem;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.study.base.boot.aggregations.v1.order.application.dto.req.CreateOrderItem;
 import com.study.base.boot.aggregations.v1.order.domain.entity.OrderAggregate;
 import jakarta.persistence.*;
@@ -21,6 +22,7 @@ import org.hibernate.annotations.DynamicInsert;
 public class OrderItemEntity extends AbstractOrderItem {
 
     //    @ManyToOne
+    @JsonBackReference
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "orderId")
     private OrderAggregate order;
