@@ -1,6 +1,6 @@
 package com.study.base.boot.aggregations.v1.item.presentation.dto.req;
 
-import com.study.base.boot.aggregations.v1.item.application.dto.req.RegisterItem;
+import com.study.base.boot.aggregations.v1.item.application.dto.req.CreateItem;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -13,17 +13,17 @@ import java.util.stream.Collectors;
 @Builder(access = AccessLevel.PUBLIC)
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
-public class RegisterItemsDto {
+public class CreateItemsDto {
 
     @Valid
     @NotNull
     @Size(min = 1)
-    private List<RegisterItemDto> registerItems;
+    private List<CreateItemDto> items;
 
-    public List<RegisterItem> toList() {
-        return this.registerItems
+    public List<CreateItem> toCreateItems() {
+        return this.items
                 .stream()
-                .map(RegisterItemDto::toCreate)
+                .map(CreateItemDto::toCreate)
                 .collect(Collectors.toList());
     }
 }

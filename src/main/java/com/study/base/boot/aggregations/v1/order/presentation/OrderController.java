@@ -36,12 +36,10 @@ public class OrderController {
                                        @PageableDefault(size = 10, sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
         Page<OrderAggregate> pageOrders = orderService.listByStatus(status, pageable);
         List<OrderAggregate> orders = pageOrders.getContent();
-
         List<OrderDto> ordeDtos = orders
                 .stream()
                 .map(orderEDMapper::toDto)
                 .collect(Collectors.toList());
-
         return new PageImpl<>(ordeDtos, pageable, pageOrders.getTotalElements());
 
     }

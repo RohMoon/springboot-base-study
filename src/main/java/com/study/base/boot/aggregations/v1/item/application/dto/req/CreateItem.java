@@ -8,11 +8,11 @@ import lombok.*;
 @Builder
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
-public class RegisterItem {
+public class CreateItem {
     @NotNull
     private String itemName;
     @PositiveOrZero
     private int price;
-    private RegisterStockItem stock;
+    private CreateItemStock stock;
 }
 

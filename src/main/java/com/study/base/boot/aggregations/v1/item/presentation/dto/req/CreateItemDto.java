@@ -1,6 +1,6 @@
 package com.study.base.boot.aggregations.v1.item.presentation.dto.req;
 
-import com.study.base.boot.aggregations.v1.item.application.dto.req.RegisterItem;
+import com.study.base.boot.aggregations.v1.item.application.dto.req.CreateItem;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.PositiveOrZero;
@@ -16,7 +16,7 @@ import org.hibernate.annotations.DynamicInsert;
 @DynamicInsert
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
-public class RegisterItemDto {
+public class CreateItemDto {
     @NotNull
     private String itemName;
     @PositiveOrZero
@@ -24,10 +24,10 @@ public class RegisterItemDto {
 
     @NotNull
     @Valid
-    private RegisterItemStockDto stock;
+    private CreateItemStockDto stock;
 
-    public RegisterItem toCreate() {
-        return RegisterItem
+    public CreateItem toCreate() {
+        return CreateItem
                 .builder()
                 .itemName(this.itemName)
                 .price(this.price)

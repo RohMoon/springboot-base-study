@@ -8,9 +8,9 @@ public enum ItemStatusEnum {
     SELL("판매중"),
     STOP("판매중단");
 
-    private String status;
+    private String statusName;
 
-    ItemStatusEnum(String status) {
-        this.status = status;
+    ItemStatusEnum(String statusName) {
+        this.statusName = statusName;
     }
 }

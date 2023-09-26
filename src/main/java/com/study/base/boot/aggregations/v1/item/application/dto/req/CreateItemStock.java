@@ -6,9 +6,6 @@ import lombok.*;
 @Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
-public class RegisterStockItem {
-    private long itemId;
-    private String itemName;
-    private int price;
-    private int qty;
+public class CreateItemStock {
+    private int stockQty;
 }

@@ -1,8 +1,7 @@
 package com.study.base.boot.aggregations.v1.item.presentation;
 
 import com.study.base.boot.aggregations.v1.item.application.ItemService;
-import com.study.base.boot.aggregations.v1.item.presentation.dto.req.RegisterItemsDto;
-import com.study.base.boot.config.annotations.Get;
+import com.study.base.boot.aggregations.v1.item.presentation.dto.req.CreateItemsDto;
 import com.study.base.boot.config.annotations.Post;
 import com.study.base.boot.config.annotations.RestApi;
 import jakarta.validation.Valid;
@@ -19,13 +18,10 @@ public class ItemController {
 
     private final ItemService itemService;
 
-    @Get
-    public List<String> getItems() {
-        return List.of("A", "B", "C");
-    }
-
     @Post
-    public List<Long> registerItems(@RequestBody @Valid RegisterItemsDto request) {
-        return itemService.registerItems(request.toList());
+    public List<Long> createItems(@RequestBody @Valid CreateItemsDto request) {
+        final var createItems = request.toCreateItems();
+        final var ids = itemService.creates(createItems);
+        return ids;
     }
 }
