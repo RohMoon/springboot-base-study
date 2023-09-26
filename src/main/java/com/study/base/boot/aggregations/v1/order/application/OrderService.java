@@ -10,6 +10,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -52,6 +53,19 @@ public class OrderService {
         Page<OrderAggregate> allByStatus = orderRepository.findAllByStatus(orderStatus, pageable);
 
         return allByStatus;
+    }
+
+    public Page<OrderAggregate> findAllByCreatedDateBetweenAndPriceBetween(LocalDateTime periodFrom,
+                                                                           LocalDateTime periodTo,
+                                                                           int minPrice, int maxPrice, Pageable pageable
+
+    ) {
+        Page<OrderAggregate> allByConditions = orderRepository.findAllByCreatedDateBetweenAndPriceBetween(periodFrom,
+                                                                                                          periodTo,
+                                                                                                          minPrice,
+                                                                                                          maxPrice,
+                                                                                                          pageable);
+        return allByConditions;
     }
 
 

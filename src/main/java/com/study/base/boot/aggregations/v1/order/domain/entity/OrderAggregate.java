@@ -22,8 +22,8 @@ import java.util.stream.Collectors;
 @DynamicInsert
 @SuperBuilder
 @Table(catalog = "base", name = "order")
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor(access = AccessLevel.PUBLIC)
+@AllArgsConstructor(access = AccessLevel.PUBLIC)
 public class OrderAggregate extends AbstractOrder {
 
     @OneToMany(mappedBy = "order", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)

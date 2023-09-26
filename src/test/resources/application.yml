@@ -1,0 +1,17 @@
+server:
+  port: 8001
+
+spring:
+  datasource:
+    url: jdbc:h2:mem:testdb;INIT=CREATE SCHEMA IF NOT EXISTS BASE;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+    driver-class-name: org.h2.Driver
+    username: sa
+    password: password
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate.globally_quoted_identifiers: true
+      hibernate:
+        dialect: org.hibernate.dialect.H2Dialect

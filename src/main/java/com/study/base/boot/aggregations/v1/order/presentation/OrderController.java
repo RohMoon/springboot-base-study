@@ -20,6 +20,7 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -44,6 +45,18 @@ public class OrderController {
                 .collect(Collectors.toList());
 
         return new PageImpl<>(orderDtos, pageable, pageOrders.getTotalElements());
+    }
+
+    @Get("/conditions")
+    public Page<OrderDto> listByConditions() {
+        orderService.findAllByCreatedDateBetweenAndPriceBetween(
+                LocalDateTime.now(),
+                LocalDateTime.now(),
+                1000,
+                1000,
+                Pageable.ofSize(10)
+        );
+        return null;
     }
 
     @Get("/{id}")
