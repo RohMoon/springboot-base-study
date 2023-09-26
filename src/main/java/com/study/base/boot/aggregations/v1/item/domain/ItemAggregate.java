@@ -1,7 +1,6 @@
 package com.study.base.boot.aggregations.v1.item.domain;
 
 import com.study.base.boot.aggregations.v1.item.application.dto.req.CreateItem;
-import com.study.base.boot.aggregations.v1.item.domain.entity.item.AbstractItem;
 import com.study.base.boot.aggregations.v1.item.domain.entity.itemStock.ItemStockEntity;
 import com.study.base.boot.aggregations.v1.item.infrastructure.repository.ItemRepository;
 import jakarta.persistence.*;

@@ -1,4 +1,4 @@
-package com.study.base.boot.aggregations.v1.item.domain.entity.item;
+package com.study.base.boot.aggregations.v1.item.domain;
 
 import com.study.base.boot.aggregations.v1.item.domain.enumerations.ItemStatusEnum;
 import jakarta.persistence.*;
@@ -20,17 +20,19 @@ import java.time.LocalDateTime;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 public class AbstractItem {
-
-    protected String itemName;
-    @Enumerated(EnumType.STRING)
-    protected ItemStatusEnum status;
-    protected int price;
-    @CreatedDate
-    protected LocalDateTime createdDate;
-    @LastModifiedDate
-    protected LocalDateTime updatedDate;
-    protected LocalDateTime deletedDate;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    protected String itemName;
+
+    @Enumerated(EnumType.STRING)
+    protected ItemStatusEnum status;
+    protected int price;
+
+    @CreatedDate
+    protected LocalDateTime createdDate;
+
+    @LastModifiedDate
+    protected LocalDateTime updatedDate;
+    protected LocalDateTime deletedDate;
 }

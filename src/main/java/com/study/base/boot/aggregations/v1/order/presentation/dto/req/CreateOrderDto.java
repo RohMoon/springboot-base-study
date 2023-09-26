@@ -26,8 +26,10 @@ public class CreateOrderDto {
 
     @NotNull
     private String orderName;
+
     @PositiveOrZero
     private int price;
+
     @PositiveOrZero
     private int deliveryFee;
 

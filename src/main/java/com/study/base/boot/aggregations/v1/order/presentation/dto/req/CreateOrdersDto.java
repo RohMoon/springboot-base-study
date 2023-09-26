@@ -18,10 +18,10 @@ public class CreateOrdersDto {
     @Valid
     @NotNull
     @Size(min = 1)
-    private List<CreateOrderDto> createOrders;
+    private List<CreateOrderDto> orders;
 
     public List<CreateOrder> toCreateList() {
-        return this.createOrders
+        return this.orders
                 .stream()
                 .map(CreateOrderDto::toCreate)
                 .collect(Collectors.toList());

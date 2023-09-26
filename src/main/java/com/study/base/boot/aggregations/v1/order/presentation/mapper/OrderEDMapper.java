@@ -1,6 +1,6 @@
 package com.study.base.boot.aggregations.v1.order.presentation.mapper;
 
-import com.study.base.boot.aggregations.v1.order.domain.entity.order.OrderAggregate;
+import com.study.base.boot.aggregations.v1.order.domain.entity.OrderAggregate;
 import com.study.base.boot.aggregations.v1.order.presentation.dto.res.OrderDto;
 import com.study.base.boot.config.mapstruct.base.BaseEntity;
 import com.study.base.boot.config.mapstruct.mapper.SupportEntityToDtoMapper;

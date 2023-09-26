@@ -1,8 +1,7 @@
 package com.study.base.boot.aggregations.v1.order.application;
 
 import com.study.base.boot.aggregations.v1.order.application.dto.req.CreateOrder;
-import com.study.base.boot.aggregations.v1.order.domain.entity.order.OrderAggregate;
-import com.study.base.boot.aggregations.v1.order.domain.entity.orderItem.OrderItemEntity;
+import com.study.base.boot.aggregations.v1.order.domain.entity.OrderAggregate;
 import com.study.base.boot.aggregations.v1.order.domain.enumerations.OrderStatusEnum;
 import com.study.base.boot.aggregations.v1.order.infrastructure.repository.OrderRepository;
 import lombok.RequiredArgsConstructor;
@@ -31,16 +30,10 @@ public class OrderService {
     }
 
     @Transactional
-    public List<Long> createOrders(List<CreateOrder> createOrderList) {
-        List<OrderAggregate> orders = createOrderList
-                .stream()
-                .map(createOrder -> OrderAggregate
-                        .builder()
-                        .build()
-                        .patch(createOrder))
-                .toList();
-        return OrderAggregate
-                .saveAll(orderRepository, orders)
+    public List<Long> creates(List<CreateOrder> createOrders) {
+        final var orders = OrderAggregate.creates(orderRepository, createOrders);
+
+        return orders
                 .stream()
                 .map(OrderAggregate::getId)
                 .collect(Collectors.toList());
@@ -50,9 +43,6 @@ public class OrderService {
     public OrderAggregate get(long id) {
         Optional<OrderAggregate> byId = orderRepository.findById(id);
         OrderAggregate orderAggregate = byId.orElseGet(null);
-
-        List<OrderItemEntity> items = orderAggregate.getItems();
-
 
         return orderAggregate;
     }

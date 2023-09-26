@@ -1,11 +1,9 @@
-package com.study.base.boot.aggregations.v1.order.domain.entity.order;
+package com.study.base.boot.aggregations.v1.order.domain.entity;
 
 import com.study.base.boot.aggregations.v1.order.application.dto.req.CreateOrder;
 import com.study.base.boot.aggregations.v1.order.domain.entity.orderItem.OrderItemEntity;
 import com.study.base.boot.aggregations.v1.order.infrastructure.repository.OrderRepository;
-import jakarta.persistence.Entity;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -15,9 +13,9 @@ import org.apache.commons.lang3.StringUtils;
 import org.hibernate.annotations.DynamicInsert;
 import org.springframework.util.Assert;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Getter
 @Entity
@@ -28,7 +26,7 @@ import java.util.List;
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 public class OrderAggregate extends AbstractOrder {
 
-    @OneToMany(mappedBy = "order")
+    @OneToMany(mappedBy = "order", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     private List<OrderItemEntity> items; //@Entity 타입을 줘야 한다.
 
     public OrderAggregate create(OrderRepository orderRepository) {
@@ -36,8 +34,21 @@ public class OrderAggregate extends AbstractOrder {
         return this;
     }
 
-    public static List<OrderAggregate> saveAll(OrderRepository orderRepository, List<OrderAggregate> orders) {
-        return orderRepository.saveAll(orders);
+    public static List<OrderAggregate> creates(OrderRepository orderRepository, List<CreateOrder> createOrders) {
+        Assert.notEmpty(createOrders, "createOrders is null");
+
+        final var orders = createOrders
+                .stream()
+                .map(createOrder ->
+                             OrderAggregate
+                                     .builder()
+                                     .build()
+                                     .patch(createOrder)
+                )
+                .collect(Collectors.toList());
+
+        orderRepository.saveAll(orders);
+        return orders;
     }
 
     public OrderAggregate patch(CreateOrder createOrder) {
@@ -47,7 +58,6 @@ public class OrderAggregate extends AbstractOrder {
         this.deliveryFee = createOrder.getDeliveryFee();
         this.address = StringUtils.defaultIfEmpty(createOrder.getOrderNumber(), this.address);
         this.userId = createOrder.getUserId();
-        this.createdDate = LocalDateTime.now();
 
         createOrder
                 .getItems()
@@ -68,7 +78,7 @@ public class OrderAggregate extends AbstractOrder {
             this.items = new ArrayList<>();
         }
 
-//        orderItem.putOrder(this);
+        orderItem.putOrder(this);
         this.items.add(orderItem);
 
         return this;
