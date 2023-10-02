@@ -50,11 +50,6 @@ public class OrderController {
                                            int maxPrice,
                                            @PageableDefault(size = 10, sort = "id", direction = Sort.Direction.DESC)
                                            Pageable pageable) {
-        System.out.println(periodFrom);
-        System.out.println(periodTo);
-        System.out.println(minPrice);
-        System.out.println(maxPrice);
-        System.out.println(pageable);
 
         Page<OrderAggregate> pageOrders = orderService.findAllByCreatedDateBetweenAndPriceBetween(
                 periodFrom,
