@@ -3,6 +3,7 @@ package com.study.base.boot.aggregations.v1.order.domain.entity;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.study.base.boot.aggregations.v1.order.application.dto.req.CreateOrder;
 import com.study.base.boot.aggregations.v1.order.domain.entity.orderItem.OrderItemEntity;
+import com.study.base.boot.aggregations.v1.order.domain.enumerations.OrderStatusEnum;
 import com.study.base.boot.aggregations.v1.order.infrastructure.repository.OrderRepository;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -36,7 +37,8 @@ public class OrderAggregate extends AbstractOrder {
         return this;
     }
 
-    public static List<OrderAggregate> creates(OrderRepository orderRepository, List<CreateOrder> createOrders) {
+    public static List<OrderAggregate> creates(OrderRepository orderRepository,
+                                               List<CreateOrder> createOrders) {
         Assert.notEmpty(createOrders, "createOrders is null");
 
         final var orders = createOrders
@@ -84,5 +86,13 @@ public class OrderAggregate extends AbstractOrder {
         this.items.add(orderItem);
 
         return this;
+    }
+
+    public void changeOrder() {
+        this.status = OrderStatusEnum.ORDER;
+    }
+
+    public void changeCanceled() {
+        this.status = OrderStatusEnum.CANCELED;
     }
 }

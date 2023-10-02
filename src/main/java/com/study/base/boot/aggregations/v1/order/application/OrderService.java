@@ -1,10 +1,14 @@
 package com.study.base.boot.aggregations.v1.order.application;
 
+import com.study.base.boot.aggregations.v1.order.application.dto.GetOrder;
 import com.study.base.boot.aggregations.v1.order.application.dto.req.CreateOrder;
 import com.study.base.boot.aggregations.v1.order.domain.entity.OrderAggregate;
 import com.study.base.boot.aggregations.v1.order.domain.enumerations.OrderStatusEnum;
 import com.study.base.boot.aggregations.v1.order.infrastructure.repository.OrderRepository;
+import com.study.base.boot.aggregations.v1.order.infrastructure.repository.dto.req.OrderCondition;
+import com.study.base.boot.aggregations.v1.order.infrastructure.repository.dto.res.OrderInfoProjection;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -15,6 +19,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class OrderService {
@@ -31,6 +36,20 @@ public class OrderService {
         final var orders = OrderAggregate.creates(orderRepository, createOrders);
 
         return orders.stream().map(OrderAggregate::getId).collect(Collectors.toList());
+    }
+
+    @Transactional(readOnly = true)
+    public Page<OrderAggregate> list(GetOrder request) {
+        final OrderCondition condition = request.toCondition();
+        final Page<OrderAggregate> pageOrders = orderRepository.getOrders(condition);
+        final List<OrderInfoProjection> orders = orderRepository.getOrders(
+                condition.getStartDate(),
+                condition.getEndDate(),
+                condition.getPrice()
+        );
+
+        log.info("orders :: { }", orders);
+        return pageOrders;
     }
 
     @Transactional(readOnly = true)
@@ -60,6 +79,31 @@ public class OrderService {
                                                                                                           maxPrice,
                                                                                                           pageable);
         return allByConditions;
+    }
+
+    @Transactional
+    public void changeStatus(long id,
+                             OrderStatusEnum status) {
+     /*   switch (status){
+            case ORDER -> this.changeToOrder(id);
+            case CANCELED -> this.changeToCanceled(id);
+            default -> throw new IllegalArgumentException("잘못된 상태");
+        }*/
+        orderRepository.changeStatus(id, status);
+    }
+
+    @Transactional
+    public void changeToCanceled(long id) {
+        final var orderOptional = orderRepository.findById(id);
+
+        orderOptional.ifPresent(OrderAggregate::changeCanceled);
+    }
+
+    @Transactional
+    public void changeToOrder(long id) {
+        final var orderOptional = orderRepository.findById(id);
+
+        orderOptional.ifPresent(OrderAggregate::changeOrder);
     }
 
 
