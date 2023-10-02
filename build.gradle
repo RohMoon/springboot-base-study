@@ -25,6 +25,9 @@ repositories {
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.0.2'
+
+    implementation 'org.projectlombok:lombok-mapstruct-binding:0.2.0'
+    implementation 'org.mapstruct:mapstruct:1.5.5.Final'
     //spring validation
     implementation 'org.springframework.boot:spring-boot-starter-validation'
     // mysql
@@ -33,7 +36,12 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
+    //롬복 밑에 있어야 builder 사용 가능함.
+    annotationProcessor "org.mapstruct:mapstruct-processor:1.5.5.Final" // MapStruct
+    annotationProcessor "org.projectlombok:lombok-mapstruct-binding:0.2.0" // MapStruct
+
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'com.h2database:h2'
 }
 
 tasks.named('test') {

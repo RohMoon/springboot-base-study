@@ -1,7 +1,8 @@
-package com.study.base.boot.aggregations.v1.order.domain.entity;
+package com.study.base.boot.aggregations.v1.order.domain.entity.orderItem;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.study.base.boot.aggregations.v1.order.application.dto.req.CreateOrderItem;
-import com.study.base.boot.aggregations.v1.order.domain.OrderAggregate;
+import com.study.base.boot.aggregations.v1.order.domain.entity.OrderAggregate;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -11,17 +12,19 @@ import lombok.experimental.SuperBuilder;
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.annotations.DynamicInsert;
 
-@Table(catalog = "base", name = "order_item")
+@Getter
 @Entity
 @SuperBuilder
+@DynamicInsert
+@Table(catalog = "base", name = "order_item")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
-@DynamicInsert
-@Getter
 public class OrderItemEntity extends AbstractOrderItem {
 
+    //    @ManyToOne
+    @JsonBackReference
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "orderId") // 이테이블에 외래키
+    @JoinColumn(name = "orderId")
     private OrderAggregate order;
 
     public OrderItemEntity putOrder(OrderAggregate order) {
@@ -34,7 +37,7 @@ public class OrderItemEntity extends AbstractOrderItem {
         this.itemName = StringUtils.defaultIfEmpty(createOrderItem.getItemName(), this.itemName);
         this.price = createOrderItem.getPrice();
         this.qty = createOrderItem.getQty();
-
         return this;
     }
+
 }

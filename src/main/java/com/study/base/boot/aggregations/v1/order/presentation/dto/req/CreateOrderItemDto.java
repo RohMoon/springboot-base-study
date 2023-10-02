@@ -10,12 +10,16 @@ import lombok.Getter;
 @Getter
 @Builder
 public class CreateOrderItemDto {
+
     @PositiveOrZero
     private long itemId;
+
     @NotNull
     private String itemName;
+
     @PositiveOrZero
     private int price;
+
     @PositiveOrZero
     private int qty;
 

@@ -1,59 +1,56 @@
-package com.study.base.boot.aggregations.v1.order.domain;
+package com.study.base.boot.aggregations.v1.order.domain.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.study.base.boot.aggregations.v1.order.application.dto.req.CreateOrder;
-import com.study.base.boot.aggregations.v1.order.domain.entity.OrderItemEntity;
-import com.study.base.boot.aggregations.v1.order.domain.enumerations.OrderStatusEnum;
+import com.study.base.boot.aggregations.v1.order.domain.entity.orderItem.OrderItemEntity;
 import com.study.base.boot.aggregations.v1.order.infrastructure.repository.OrderRepository;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.annotations.DynamicInsert;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import org.springframework.util.Assert;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
-@Entity
-@Builder
 @Getter
+@Entity
 @DynamicInsert
+@SuperBuilder
 @Table(catalog = "base", name = "order")
-@EntityListeners(AuditingEntityListener.class)
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor(access = AccessLevel.PROTECTED)
-public class OrderAggregate {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+@NoArgsConstructor(access = AccessLevel.PUBLIC)
+@AllArgsConstructor(access = AccessLevel.PUBLIC)
+public class OrderAggregate extends AbstractOrder {
 
-    private String orderNumber;
-    private String orderName;
-    @Enumerated(EnumType.STRING)
-    private OrderStatusEnum status;
-    private int price;
-    private int deliveryFee;
-    private String address;
-    private long userId;
-    @CreatedDate
-    private LocalDateTime createdDate;
-    @LastModifiedDate
-    private LocalDateTime updatedDate;
-    //orderitem의 정보가 없으니 알거 없고 다른데서 order를 쓰라고하ㅡ
+    @JsonManagedReference
     @OneToMany(mappedBy = "order", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     private List<OrderItemEntity> items; //@Entity 타입을 줘야 한다.
 
     public OrderAggregate create(OrderRepository orderRepository) {
         orderRepository.save(this);
-
         return this;
     }
 
-    public static List<OrderAggregate> saveAll(OrderRepository orderRepository, List<OrderAggregate> orders) {
-        return orderRepository.saveAll(orders);
+    public static List<OrderAggregate> creates(OrderRepository orderRepository, List<CreateOrder> createOrders) {
+        Assert.notEmpty(createOrders, "createOrders is null");
+
+        final var orders = createOrders
+                .stream()
+                .map(createOrder ->
+                             OrderAggregate
+                                     .builder()
+                                     .build()
+                                     .patch(createOrder)
+                )
+                .collect(Collectors.toList());
+
+        orderRepository.saveAll(orders);
+        return orders;
     }
 
     public OrderAggregate patch(CreateOrder createOrder) {
@@ -63,10 +60,7 @@ public class OrderAggregate {
         this.deliveryFee = createOrder.getDeliveryFee();
         this.address = StringUtils.defaultIfEmpty(createOrder.getOrderNumber(), this.address);
         this.userId = createOrder.getUserId();
-        this.createdDate = LocalDateTime.now();
 
-//        createOrder.getItems()
-//                .forEach(item -> this.addItem(null));
         createOrder
                 .getItems()
                 .forEach(item -> this.addItem(
@@ -91,5 +85,4 @@ public class OrderAggregate {
 
         return this;
     }
-
 }
